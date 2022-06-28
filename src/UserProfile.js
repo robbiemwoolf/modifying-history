@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 function UserProfile() {
   const [user, setUser] = useState({});
   const { userId } = useParams();
+  const history = useHistory();
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -30,14 +31,12 @@ function UserProfile() {
     </div>
   ));
 
-  const deleteHandler = (event) => {
-    // This will be successful but will not actually delete the user.
-    fetch(
+  const deleteHandler = async (event) => {
+    await fetch(
       `https://jsonplaceholder.typicode.com/users/${userId}`,
       { method: "DELETE" } // the delete method tells the API to delete the user
-    )
-      .then((response) => response.json())
-      .then((data) => console.log("deleteHandler is not fully implemented"));
+    );
+    history.push('/');
   };
 
   if (user.id) {
